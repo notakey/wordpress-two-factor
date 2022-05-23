@@ -1,6 +1,6 @@
 # Security Policy
 
-<!-- 
+<!--
 ## Supported Versions
 
 Use this section to tell people about which versions of your project are
@@ -11,9 +11,11 @@ currently being supported with security updates.
 | 5.1.x   | :white_check_mark: |
 | 5.0.x   | :x:                |
 | 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                | 
+| < 4.0   | :x:                |
 -->
 
 ## Reporting a Vulnerability
 
-Please use our support portal to report any vulnerabilities [Notakey Support](https://notakey.freshdesk.com/support/tickets/new).
+Please use our support portal to report any security related issues: [Notakey Support](https://notakey.freshdesk.com/support/tickets/new).
+
+<!-- TODO: Add note on GPG signing / encryption -->
