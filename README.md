@@ -1,2 +1,2 @@
 # wordpress-two-factor
-Wordpress Two-Factor extension for Notakey push based authentication
+Wordpress Two-Factor plugin extension for Notakey push based authentication
