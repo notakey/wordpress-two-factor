@@ -37,9 +37,10 @@ See our [documentation site](https://documentation.notakey.com/) for detailed in
 
 == Screenshots ==
 
-1. Two-factor options under User Profile.
-2. U2F Security Keys section under User Profile.
-3. Email Code Authentication during WordPress Login.
+1. Two-factor authentication security policy settings.
+2. Notakey authentication request options.
+3. Notakey Authentication Server settings.
+4. User authentication while waiting for response from Notakey app.
 
 == Get Involved ==
 
