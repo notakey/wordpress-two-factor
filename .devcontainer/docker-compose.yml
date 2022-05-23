@@ -15,10 +15,8 @@ services:
     links:
       - db
     volumes:
-      #Swap the folder path for plugin vs theme development
       - wordpress:/var/www/html
-      - ../:/var/www/html/wp-content/plugins/plugin-dev
-      #- ../:/var/www/html/wp-content/themes/theme-dev
+      - ../:/var/www/html/wp-content/plugins/two-factor-notakey
 
   db:
     image: mariadb:10
@@ -27,8 +25,8 @@ services:
       MYSQL_USER: wp_user
       MYSQL_PASSWORD: wp_pass
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
-    ports:
-      - 3306:3306
+    # ports:
+    #   - 3306:3306
     volumes:
       - data:/var/lib/mysql
 

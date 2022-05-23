@@ -1,10 +1,10 @@
 {
-    "name": "WordPress",
+    "name": "Wordpress Notakey MFA",
     "dockerComposeFile": "docker-compose.yml",
     "service": "wordpress",
     // Uncomment the appropriate line depending on plugin vs theme development.
     // This should match the active volume mount in docker-compose.yml
-    "workspaceFolder": "/var/www/html/wp-content/plugins/plugin-dev",
+    "workspaceFolder": "/var/www/html/wp-content/plugins/two-factor-notakey",
     //"workspaceFolder": "/var/www/html/wp-content/themes/theme-dev",
     // Set *default* container specific settings.json values on container create.
     "settings": {

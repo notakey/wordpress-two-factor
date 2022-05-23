@@ -41,10 +41,10 @@ RUN set -ex; \
     docker-php-ext-enable imagick xdebug;\
     rm -rf /var/lib/apt/lists/*
 
-#XDebug settings
+# XDebug settings
 RUN echo "[XDebug]\nxdebug.remote_enable = 1\nxdebug.remote_autostart = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
 
-#WP recommended PHP settings
+# WP recommended PHP settings
 RUN { \
     echo 'opcache.memory_consumption=128'; \
     echo 'opcache.interned_strings_buffer=8'; \
@@ -53,28 +53,29 @@ RUN { \
     echo 'opcache.fast_shutdown=1'; \
     } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-#install WP-CLI
+# install WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wp
+    && mv wp-cli.phar /usr/local/bin/wp \
+    && mkdir -p /var/www/.wp-cli/cache
 
-#install Composer
+# install Composer
 WORKDIR /tmp
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer
 
-#add vscode user
+# add vscode user
 RUN useradd -ms /bin/bash vscode \
     && usermod -aG www-data vscode
 
 WORKDIR /var/www/html
 USER www-data
 
-#Download WP
+# Download WP
 RUN wp core download
 
-#add dirs for plugin and theme dev
-RUN mkdir -p /var/www/html/wp-content/plugins/plugin-dev; \
+# add dirs for plugin and theme dev
+RUN mkdir -p /var/www/html/wp-content/plugins/two-factor-notakey; \
     mkdir -p /var/www/html/wp-content/themes/theme-dev;
 
 USER root
