@@ -29,11 +29,11 @@ Other configuration options include:
 
 - Configuration for Notakey Authentication Server.
 
-To adjust poflicy or configure this plugin, navigate to "Settings" → "Notakey MFA".
+To adjust policy or configure this plugin, navigate to "Settings" → "Notakey MFA".
 
 Plugin requires a hosted or on-premise version of Notakey Authentication Server (yes, there is a free version) with configured service, onboarding requirements and API client credentials.
 
-See our [documentation site](https://documnetation.notakey.com/) for detailed instructions how to set up Notakey Authentication Server.
+See our [documentation site](https://documentation.notakey.com/) for detailed instructions how to set up Notakey Authentication Server.
 
 == Screenshots ==
 
