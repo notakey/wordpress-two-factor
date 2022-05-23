@@ -1,0 +1,22 @@
+{
+    "name": "notakey/two-factor-extension",
+    "type": "wordpress-plugin",
+    "description": "Notakey Extension for Wordpress Two-Factor Authentication Plugin.",
+    "license": "GPL-2.0",
+    "homepage": "https://github.com",
+    "support": {
+        "source": "https://github.com",
+        "issues": "https://github.com"
+    },
+    "config": {
+        "platform": {
+            "php": "5.6.20"
+        }
+    },
+    "require": {
+        "php": ">=5.6",
+        "nategood/httpful": "*",
+        "ext-json": "*",
+        "ext-curl": "*"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "intelephense.environment.includePaths": [
+        "/var/www/html/",
+        "/var/www/html/wp-content/plugins/two-factor/providers/",
+        "./vendor/autoload.php"
+    ],
+    "php.suggest.basic": false
+}
