@@ -4,6 +4,8 @@ Requires at least: 4.3
 Tested up to: 5.9
 Requires PHP: 5.6
 Stable tag: trunk
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Enable Two-Factor Authentication using Notakey Authenticator mobile application. Users with enabled Notakey authentication provider will be sent authentication request to registered mobile device (phone, tablet) after entering a valid username and password.
 
