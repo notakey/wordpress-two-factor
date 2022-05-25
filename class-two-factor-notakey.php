@@ -181,7 +181,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
         require_once ABSPATH . '/wp-admin/includes/template.php';
 ?>
         <p><strong><?php esc_html_e('Notakey Authentication', Ntk_Two_Factor_Core::td()); ?></strong></p>
-        <input type="hidden" name="wp-auth-ntk-uuid" id="wp-auth-ntk-uuid" value="<?php echo htmlspecialchars($uuid, ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="hidden" name="wp-auth-ntk-uuid" id="wp-auth-ntk-uuid" value="<?php echo esc_attr($uuid); ?>">
         <div id="ntk_auth_wait">
             <p><?php esc_html_e('Sending authentication request...', Ntk_Two_Factor_Core::td()); ?></p>
         </div>
@@ -437,7 +437,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
                             <?php if ($has_pass) { ?>
                                 <p>
                                     <label for="two-factor-notakey-user">
-                                        <?php esc_html_e("Notakey username:", Ntk_Two_Factor_Core::td()); ?> <code><?php echo $this->get_ntk_username($user); ?></code>
+                                        <?php esc_html_e("Notakey username:", Ntk_Two_Factor_Core::td()); ?> <code><?php echo esc_html($this->get_ntk_username($user)); ?></code>
                                     </label>
                                 </p>
                                 <p>

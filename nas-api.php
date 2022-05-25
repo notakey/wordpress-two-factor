@@ -103,10 +103,6 @@ class NasApi
             }
         }
 
-        // if ($scopes != 'urn:notakey:auth') {
-        //     echo $this->_token;
-        // }
-
         return "Bearer " . $this->_token[$scopes];
     }
 

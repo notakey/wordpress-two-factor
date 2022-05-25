@@ -159,23 +159,23 @@ class Ntk_Two_Factor_Core
             case 'text':
             case 'password':
             case 'number':
-                $html .= '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '" value="' . $data . '"/>' . "\n";
+                echo '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '" value="' . esc_attr($data) . '"/>' . "\n";
                 break;
 
             case 'text_secret':
-                $html .= '<input id="' . esc_attr($field['id']) . '" type="text" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '" value=""/>' . "\n";
+                echo '<input id="' . esc_attr($field['id']) . '" type="text" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '" value=""/>' . "\n";
                 break;
 
             case 'textarea':
-                $html .= '<textarea id="' . esc_attr($field['id']) . '" rows="5" cols="50" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '">' . $data . '</textarea><br/>' . "\n";
+                echo '<textarea id="' . esc_attr($field['id']) . '" rows="5" cols="50" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '">' . esc_html($data) . '</textarea><br/>' . "\n";
                 break;
 
             case 'checkbox':
-                $checked = '';
                 if ($data && 'on' == $data) {
-                    $checked = 'checked="checked"';
+                    echo '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" checked="checked"/>' . "\n";
+                } else {
+                    echo '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" />' . "\n";
                 }
-                $html .= '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" ' . $checked . '/>' . "\n";
                 break;
 
             case 'checkbox_multi':
@@ -184,7 +184,7 @@ class Ntk_Two_Factor_Core
                     if (is_array($data) && in_array($k, $data)) {
                         $checked = true;
                     }
-                    $html .= '<label for="' . esc_attr($field['id'] . '_' . $k) . '"><input type="checkbox" ' . checked($checked, true, false) . ' name="' . esc_attr($option_name) . '[]" value="' . esc_attr($k) . '" id="' . esc_attr($field['id'] . '_' . $k) . '" /> ' . $v . '</label> ';
+                    echo '<label for="' . esc_attr($field['id'] . '_' . $k) . '"><input type="checkbox" ' . checked($checked, true, false) . ' name="' . esc_attr($option_name) . '[]" value="' . esc_attr($k) . '" id="' . esc_attr($field['id'] . '_' . $k) . '" /> ' . esc_html($v) . '</label> ';
                 }
                 break;
 
@@ -194,32 +194,32 @@ class Ntk_Two_Factor_Core
                     if ($k == $data) {
                         $checked = true;
                     }
-                    $html .= '<label for="' . esc_attr($field['id'] . '_' . $k) . '"><input type="radio" ' . checked($checked, true, false) . ' name="' . esc_attr($option_name) . '" value="' . esc_attr($k) . '" id="' . esc_attr($field['id'] . '_' . $k) . '" /> ' . $v . '</label> ';
+                    echo '<label for="' . esc_attr($field['id'] . '_' . $k) . '"><input type="radio" ' . checked($checked, true, false) . ' name="' . esc_attr($option_name) . '" value="' . esc_attr($k) . '" id="' . esc_attr($field['id'] . '_' . $k) . '" /> ' . esc_html($v) . '</label> ';
                 }
                 break;
 
             case 'select':
-                $html .= '<select name="' . esc_attr($option_name) . '" id="' . esc_attr($field['id']) . '">';
+                echo '<select name="' . esc_attr($option_name) . '" id="' . esc_attr($field['id']) . '">';
                 foreach ($field['options'] as $k => $v) {
                     $selected = false;
                     if ($k == $data) {
                         $selected = true;
                     }
-                    $html .= '<option ' . selected($selected, true, false) . ' value="' . esc_attr($k) . '">' . $v . '</option>';
+                    echo '<option ' . selected($selected, true, false) . ' value="' . esc_attr($k) . '">' . esc_html($v) . '</option>';
                 }
-                $html .= '</select> ';
+                echo '</select> ';
                 break;
 
             case 'select_multi':
-                $html .= '<select name="' . esc_attr($option_name) . '[]" id="' . esc_attr($field['id']) . '" multiple="multiple">';
+                echo '<select name="' . esc_attr($option_name) . '[]" id="' . esc_attr($field['id']) . '" multiple="multiple">';
                 foreach ($field['options'] as $k => $v) {
                     $selected = false;
                     if (in_array($k, $data)) {
                         $selected = true;
                     }
-                    $html .= '<option ' . selected($selected, true, false) . ' value="' . esc_attr($k) . '" />' . $v . '</label> ';
+                    echo '<option ' . selected($selected, true, false) . ' value="' . esc_attr($k) . '" />' . esc_html($v) . '</label> ';
                 }
-                $html .= '</select> ';
+                echo '</select> ';
                 break;
         }
 
@@ -228,15 +228,13 @@ class Ntk_Two_Factor_Core
             case 'checkbox_multi':
             case 'radio':
             case 'select_multi':
-                $html .= '<br /><span class="description">' . $field['description'] . '</span>';
+                echo '<br /><span class="description">' . esc_html($field['description']) . '</span>';
                 break;
 
             default:
-                $html .= '<label for="' . esc_attr($field['id']) . '"><span class="description">' . $field['description'] . '</span></label>' . "\n";
+                echo '<label for="' . esc_attr($field['id']) . '"><span class="description">' . esc_html($field['description']) . '</span></label>' . "\n";
                 break;
         }
-
-        echo $html;
     }
 
     private static function is_two_factor_active()
@@ -246,8 +244,7 @@ class Ntk_Two_Factor_Core
 
     public static function settings_section($section)
     {
-        $html = '<p> ' . self::$settings[$section['id']]['description'] . '</p>' . "\n";
-        echo $html;
+        echo '<p> ' . esc_html(self::$settings[$section['id']]['description']) . '</p>' . "\n";
     }
 
     private static function settings_fields()
@@ -282,7 +279,7 @@ class Ntk_Two_Factor_Core
                 array(
                     'id'             => 'enable_user_self_service',
                     'label'            => __('Allow users to provide onboarding details', self::td()),
-                    'description'    => __('Permits regular users to update their profile with mobile phone or onboarding password (depends on onboarding requirements set in Authentication Server).', self::td()),
+                    'description'    => __('Permits regular users to update their profile with mobile phone or onboarding password (depends on onboarding requirements for this service set in Authentication Server).', self::td()),
                     'type'            => 'checkbox',
                     'default'        => 'off'
                 ),
@@ -413,19 +410,19 @@ class Ntk_Two_Factor_Core
         }
 
 ?>
-        <div class="wrap" id="<?php echo self::ps(); ?>">
+        <div class="wrap" id="<?php echo esc_attr(self::ps()); ?>">
             <h2><?php _e('Notakey Multi-Factor Authentication Settings', self::td()); ?></h2>
             <!-- <p><?php _e('Add this description!!!.', self::td()); ?></p> -->
             <?php
             if (!empty($error_msg)) {
-                echo '<div id="login_error"><strong>' . $error_msg . '</strong><br /></div>';
+                echo '<div id="login_error"><strong>' . esc_html($error_msg) . '</strong><br /></div>';
             }
             ?>
             <!-- Tab navigation starts -->
             <h2 class="nav-tab-wrapper settings-tabs hide-if-no-js">
                 <?php
                 foreach (self::$settings as $section => $data) {
-                    echo '<a href="#' . $section . '" class="nav-tab">' . $data['title'] . '</a>';
+                    echo '<a href="#' . esc_attr($section) . '" class="nav-tab">' . esc_html($data['title']) . '</a>';
                 }
                 ?>
             </h2>
