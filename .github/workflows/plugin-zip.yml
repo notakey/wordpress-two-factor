@@ -26,7 +26,7 @@ jobs:
     - name: Set version number
       run: |
         sed -i 's/Stable tag: .\+/Stable tag: ${{ steps.get_version.outputs.VERSION }}/g' readme.txt
-        sed -i 's/ * Version: .\+/Version: ${{ steps.get_version.outputs.VERSION }}/g' two-factor-notakey.php
+        sed -i 's/\* Version: .\+/* Version: ${{ steps.get_version.outputs.VERSION }}/g' two-factor-notakey.php
 
     - name: Get Composer Cache Directory
       id: composer-cache
