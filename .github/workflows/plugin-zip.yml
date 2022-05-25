@@ -20,17 +20,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get version id
-      id: tag
-      uses: actions/github-script@0.2.0
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          return context.payload.ref.replace(/\/refs\/tags\//, '');
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
 
     - name: Set version number
       run: |
-        sed -i 's/Stable tag: .\+/Stable tag: ${{ steps.tag.outputs.result }}/g' readme.txt
-        sed -i 's/ * Version: .\+/Version: ${{ steps.tag.outputs.result }}/g' two-factor-notakey.php
+        sed -i 's/Stable tag: .\+/Stable tag: ${{ steps.get_version.outputs.VERSION }}/g' readme.txt
+        sed -i 's/ * Version: .\+/Version: ${{ steps.get_version.outputs.VERSION }}/g' two-factor-notakey.php
 
     - name: Get Composer Cache Directory
       id: composer-cache
