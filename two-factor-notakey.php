@@ -12,7 +12,7 @@
  * Plugin Name: Notakey Two Factor extension
  * Plugin URI: https://github.com/notakey/wordpress-two-factor/
  * Description: Two-Factor Authentication with Notakey Authenticator mobile application using push notifications.
- * Version: 1.0
+ * Version: 1.0.0
  * Author: Notakey Latvia
  * License: GPLv2
  * Author URI: https://github.com/notakey/wordpress-two-factor/graphs/contributors
