@@ -19,6 +19,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set version number
+      run: |
+        sed -i 's/Stable tag: .\+/Stable tag: ${{ github.ref }}/g' readme.txt
+        sed -i 's/ * Version: .\+/Version: ${{ github.ref }}/g' two-factor-notakey.php
+
     - name: Get Composer Cache Directory
       id: composer-cache
       run: |
@@ -32,7 +37,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        composer install -o -q
+        composer install -o -q --no-dev
 
     - name: Zip Folder
       run: zip -r ${{ github.event.repository.name }}.zip . -x ".git/*" ".github/*" ".vscode/*" ".devcontainer/*" "composer.json" "composer.lock" ".gitignore" "README.md" "SECURITY.md"
