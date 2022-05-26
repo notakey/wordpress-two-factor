@@ -159,7 +159,7 @@ class Ntk_Two_Factor_Core
             case 'text':
             case 'password':
             case 'number':
-                echo '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '" value="' . esc_attr($data) . '"/>' . "\n";
+                echo '<input id="' . esc_attr($field['id']) . '" type="' . esc_attr($field['type']) . '" name="' . esc_attr($option_name) . '" placeholder="' . esc_attr($field['placeholder']) . '" value="' . esc_attr($data) . '"/>' . "\n";
                 break;
 
             case 'text_secret':
@@ -172,9 +172,9 @@ class Ntk_Two_Factor_Core
 
             case 'checkbox':
                 if ($data && 'on' == $data) {
-                    echo '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" checked="checked"/>' . "\n";
+                    echo '<input id="' . esc_attr($field['id']) . '" type="' . esc_attr($field['type']) . '" name="' . esc_attr($option_name) . '" checked="checked"/>' . "\n";
                 } else {
-                    echo '<input id="' . esc_attr($field['id']) . '" type="' . $field['type'] . '" name="' . esc_attr($option_name) . '" />' . "\n";
+                    echo '<input id="' . esc_attr($field['id']) . '" type="' . esc_attr($field['type']) . '" name="' . esc_attr($option_name) . '" />' . "\n";
                 }
                 break;
 
