@@ -1,4 +1,4 @@
-name: Create plugin ZIP file
+name: Create and publish plugin ZIP file
 
 # on:
 #   release:
@@ -66,3 +66,16 @@ jobs:
         asset_path: ./${{ github.event.repository.name }}.zip
         asset_name: ${{ github.event.repository.name }}.zip
         asset_content_type: application/zip
+
+    - name: Unzip plugin for upload
+      run: |
+        mkdir -p build
+        unzip ${{ github.event.repository.name }}.zip -d build
+
+    - name: WordPress SVN Deploy
+      uses: nk-o/action-wordpress-plugin-deploy@master
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SOURCE_DIR: build
+        SLUG: notakey-two-factor-extension
