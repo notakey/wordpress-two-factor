@@ -1,4 +1,5 @@
 === Two-Factor ===
+Contributors: notakey
 Tags: two factor, two step, authentication, login, totp, notakey
 Requires at least: 4.3
 Tested up to: 5.9
