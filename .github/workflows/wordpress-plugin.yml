@@ -77,6 +77,6 @@ jobs:
       env:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SOURCE_DIR: build
+        SOURCE_DIR: build/
         ASSETS_DIR: assets
         SLUG: notakey-two-factor-extension
