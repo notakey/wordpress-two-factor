@@ -148,8 +148,6 @@ class Ntk_Two_Factor_Core
 
         $field = $args['field'];
 
-        $html = '';
-
         $option_name = self::ps() . "[" . $field['id'] . "]";
 
         $data = (isset(self::$options[$field['id']])) ? self::$options[$field['id']] : '';
@@ -488,18 +486,14 @@ class Ntk_Two_Factor_Core
 
     public static function validate_fields($data)
     {
-        // $data array contains values to be saved:
-        // either sanitize/modify $data or return false
-        // to prevent the new options to be saved
-
-        // Sanitize fields, eg. cast number field to integer
-        // $data['number_field'] = (int) $data['number_field'];
-
-        // Validate fields, eg. don't save options if the password field is empty
-        // if ( $data['password_field'] == '' ) {
-        // 	add_settings_error( self::ps(), 'no-password', __('A password is required.', self::td()), 'error' );
-        // 	return false;
-        // }
+        if ($data["reject_login_without_mfa"] == 'on') {
+            // Prevent user locking out himself by enabling reject_login_without_mfa while having 2FA unconfigured
+            // TODO: Implement using actions, instead of direct static call
+            if (self::is_two_factor_active() && !Two_Factor_Core::is_user_using_two_factor()) {
+                unset($data["reject_login_without_mfa"]);
+                // TODO: Add notice (after options redirect) regarding pending change
+            }
+        }
 
         return $data;
     }
