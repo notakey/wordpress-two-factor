@@ -204,7 +204,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
             <p><?php esc_html_e('Resend authentication request?', Ntk_Two_Factor_Core::td()); ?></p>
             <?php submit_button(__('Do It.', Ntk_Two_Factor_Core::td()), 'primary', 'submit-resend'); ?>
         </div>
-    <?php
+        <?php
     }
 
     private function get_auth_request($uuid)
@@ -339,11 +339,24 @@ class Two_Factor_Notakey extends Two_Factor_Provider
             return false;
         }
 
+        if (!Ntk_Two_Factor_Core::ready()) {
+        ?>
+            <div style="border: 1px solid; background-color: #FFBABA; color: #D8000C; margin: 10px auto; padding: 15px 10px 15px 50px;">
+                <p>
+                    <?php
+                    echo esc_html(
+                        _x('Notakey Two-Factor provider is not configured.', Ntk_Two_Factor_Core::td()),
+                    );
+                    ?>
+                </p>
+            </div>
+        <?php
+            return false;
+        }
+
         wp_nonce_field('user_two_factor_notakey_options', '_nonce_user_two_factor_notakey_options', false);
 
         $s = $this->ntkas()->service();
-
-        // wp_nonce_field('user_two_notakey_factor_options', '_nonce_user_notakey_two_factor_options', false);
 
         $has_sms = false;
         $has_pass = false;
@@ -364,7 +377,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
                 $is_editable = $this->can_self_edit();
             }
         }
-    ?>
+        ?>
         <div id="notakey-two-factor-options">
             <p>
                 <?php

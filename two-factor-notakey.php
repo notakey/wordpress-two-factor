@@ -517,6 +517,20 @@ class Ntk_Two_Factor_Core
         }
     }
 
+    public static function ready()
+    {
+        if (
+            self::get_config('service_url', '') != '' &&
+            self::get_config('client_id', '') != '' &&
+            self::get_config('client_secret', '') != '' &&
+            self::get_config('service_id', '') != ''
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function ntkas()
     {
         require_once(plugin_dir_path(__FILE__) . '/vendor/autoload.php');
