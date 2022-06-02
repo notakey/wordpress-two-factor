@@ -1,4 +1,4 @@
-=== Two-Factor ===
+=== Notakey Provider for Two-Factor ===
 Contributors: notakey
 Tags: two factor, two step, authentication, login, totp, notakey
 Requires at least: 4.3
@@ -8,9 +8,11 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Enable Two-Factor Authentication using Notakey Authenticator mobile application. Users with enabled Notakey authentication provider will be sent authentication request to registered mobile device (phone, tablet) after entering a valid username and password.
+Reduce friction and improve security of Two-Factor Authentication using push-based Notakey Authenticator mobile application.
 
 == Description ==
+
+Users with enabled Notakey authentication provider will be sent authentication request to registered mobile device (phone, tablet) after entering a valid username and password.
 
 This plugin requires Wordpress [Two-Factor](https://wordpress.org/plugins/two-factor/) plugin, that provides base authentication framework. After installing and configuring both plugins, an additional authentication provider will be added to provider list. To register a mobile device for Notakey authentication, use the "Two-Factor Options" section under "Users" → "Your Profile". Install "Notakey Authenticator" and scan provided QR code with Notakey app and enter required details for device registeration.
 
