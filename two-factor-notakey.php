@@ -127,17 +127,17 @@ class Ntk_Two_Factor_Core
     {
         if (is_array(self::$settings)) {
 
-            register_setting(self::ps(), self::ps(), array(__CLASS__, 'validate_fields'));
+            register_setting(self::ps(), self::ps(), [__CLASS__, 'validate_fields']);
 
             foreach (self::$settings as $section => $data) {
 
                 // Add section to page
-                add_settings_section($section, $data['title'], array(__CLASS__, 'settings_section'), self::ps());
+                add_settings_section($section, $data['title'], [__CLASS__, 'settings_section'], self::ps());
 
                 foreach ($data['fields'] as $field) {
 
                     // Add field to page
-                    add_settings_field($field['id'], $field['label'], array(__CLASS__, 'display_field'), self::ps(), $section, array('field' => $field));
+                    add_settings_field($field['id'], $field['label'], [__CLASS__, 'display_field'], self::ps(), $section, array('field' => $field));
                 }
             }
         }
@@ -402,7 +402,7 @@ class Ntk_Two_Factor_Core
         self::register_settings();
 
         if (!self::is_two_factor_active()) {
-            add_action('admin_notices', array(__CLASS__, 'two_factor_error'));
+            add_action('admin_notices', [__CLASS__, 'two_factor_error']);
         }
     }
 
