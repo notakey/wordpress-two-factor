@@ -135,9 +135,9 @@ class Two_Factor_Notakey extends Two_Factor_Provider
         $message = Ntk_Two_Factor_Core::get_config('request_message', 'Proceed with login as user %user%?');
 
         $authreq = array(
-            "username" => $user->data->user_login,
+            "username" => $this->get_ntk_username($user),
             "action" => $title,
-            "description" => str_replace('%user%', $user->data->user_login, $message),
+            "description" => str_replace('%user%', $this->get_ntk_username($user), $message),
             "ttl_seconds" => Ntk_Two_Factor_Core::get_config('request_ttl', 300),
         );
 
@@ -236,7 +236,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
 
         $authenticated = false;
 
-        if ($r->response_type == "ApproveRequest" && $user->data->user_login == $r->username) {
+        if ($r->response_type == "ApproveRequest" && $this->get_ntk_username($user) == $r->username) {
             $authenticated = true;
         }
 
@@ -296,7 +296,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
      */
     public function is_available_for_user($user)
     {
-        return true;
+        return $this->ntkas()->user_exists($this->get_ntk_username($user));
     }
 
     /**
@@ -345,7 +345,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
                 <p>
                     <?php
                     echo esc_html(
-                        _x('Notakey Two-Factor provider is not configured.', Ntk_Two_Factor_Core::td()),
+                        _x('Notakey Two-Factor provider is not configured, device registration not possible.', Ntk_Two_Factor_Core::td()),
                     );
                     ?>
                 </p>
