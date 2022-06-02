@@ -400,24 +400,36 @@ class Ntk_Two_Factor_Core
         self::$settings = self::settings_fields();
         self::$options = self::get_options();
         self::register_settings();
+
+        if (!self::is_two_factor_active()) {
+            add_action('admin_notices', array(__CLASS__, 'two_factor_error'));
+        }
+    }
+
+    public static function two_factor_error()
+    {
+?>
+        <div class="notice notice-error">
+            <p><?php
+                printf(
+                    esc_html('Two-Factor plugin that is required by Notakey Two Factor extension not active, get it %1$s', self::td()),
+                    sprintf(
+                        '<a href="%s">%s</a>',
+                        'https://wordpress.org/plugins/two-factor/',
+                        esc_html__('here', self::td())
+                    )
+                );
+                ?></p>
+        </div>
+    <?php
     }
 
     public static function settings_page()
     {
-        $error_msg = '';
-        if (!self::is_two_factor_active()) {
-            $error_msg = __('Required Two-Factor plugin is not active, get it <a href="https://wordpress.org/plugins/two-factor/">here</a>', self::td());
-        }
-
-?>
+    ?>
         <div class="wrap" id="<?php echo esc_attr(self::ps()); ?>">
             <h2><?php _e('Notakey Multi-Factor Authentication Settings', self::td()); ?></h2>
             <!-- <p><?php _e('Add this description!!!.', self::td()); ?></p> -->
-            <?php
-            if (!empty($error_msg)) {
-                echo '<div id="login_error"><strong>' . esc_html($error_msg) . '</strong><br /></div>';
-            }
-            ?>
             <!-- Tab navigation starts -->
             <h2 class="nav-tab-wrapper settings-tabs hide-if-no-js">
                 <?php
