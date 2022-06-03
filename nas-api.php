@@ -6,6 +6,22 @@
  * @package Two_Factor_Notakey
  */
 
+class NotakeyTokenAcquisitionException extends Exception
+{
+    public function __construct($scopes, $code = 0, Throwable $previous = null)
+    {
+        $message = "Token request for $scopes failed";
+        parent::__construct($message, $code, $previous);
+    }
+}
+
+class NotakeyTokenStoreException extends Exception
+{
+}
+class NotakeyApiException extends Exception
+{
+}
+
 class NasApi
 {
     private string $_api_url;
@@ -82,7 +98,7 @@ class NasApi
             ->send();
 
         if ($response->code != 200) {
-            throw new Exception("Token acquisition failure");
+            throw new NotakeyTokenAcquisitionException($scopes);
         }
 
         return $response->body;
@@ -99,7 +115,7 @@ class NasApi
             }
 
             if (empty($this->_token[$scopes])) {
-                throw new Exception("Token API failure");
+                throw new NotakeyTokenStoreException("Token API failure");
             }
         }
 
@@ -160,7 +176,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/auth'), self::MODE_POST, $request);
 
         if ($response->code >= 400) {
-            throw new Exception("Authentication create request failure");
+            throw new NotakeyApiException("Authentication create request failure");
         }
 
         return $response->body;
@@ -171,7 +187,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id), self::MODE_GET);
 
         if ($response->code != 200) {
-            throw new Exception("Authentication service request failure HTTP:$response->code");
+            throw new NotakeyApiException("Authentication service request failure HTTP:$response->code");
         }
 
         return $response->body;
@@ -191,7 +207,7 @@ class NasApi
         }
 
         if ($response->code != 200) {
-            throw new Exception("User service request failure HTTP:$response->code");
+            throw new NotakeyApiException("User service request failure HTTP:$response->code");
         }
 
         return $response->body;
@@ -202,7 +218,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/users'), self::MODE_POST, $userdata, 'urn:notakey:user urn:notakey:usermanager');
 
         if ($response->code != 200) {
-            throw new Exception("User create request failure HTTP:$response->code");
+            throw new NotakeyApiException("User create request failure HTTP:$response->code");
         }
 
         return $response->body;
@@ -223,7 +239,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/users/' . $user_keyname), self::MODE_PUT, $userdata, 'urn:notakey:user urn:notakey:usermanager');
 
         if ($response->code != 200) {
-            throw new Exception("User update request failure HTTP:$response->code");
+            throw new NotakeyApiException("User update request failure HTTP:$response->code");
         }
 
         return $response->body;
@@ -244,7 +260,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/users/' . $user_keyname), self::MODE_DELETE, null, 'urn:notakey:user urn:notakey:usermanager');
 
         if ($response->code != 200) {
-            throw new Exception("User delete request failure HTTP:$response->code");
+            throw new NotakeyApiException("User delete request failure HTTP:$response->code");
         }
 
         return $response->body;
@@ -262,7 +278,7 @@ class NasApi
             $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/users/' . $user->keyname . '/devices/' . $d->keyname), self::MODE_DELETE, null, 'urn:notakey:user urn:notakey:devicemanager');
 
             if ($response->code != 204) {
-                throw new Exception("Device service delete request failure HTTP:$response->code");
+                throw new NotakeyApiException("Device service delete request failure HTTP:$response->code");
             }
         }
 
@@ -274,7 +290,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/users/' . $user_keyname . '/devices'), self::MODE_GET, null, 'urn:notakey:user');
 
         if ($response->code != 200) {
-            throw new Exception("Device service request failure HTTP:$response->code");
+            throw new NotakeyApiException("Device service request failure HTTP:$response->code");
         }
 
         return $response->body;
@@ -300,7 +316,7 @@ class NasApi
         $response = $this->req($this->api_url('v3/services/' . $this->_service_id . '/auth/' . $uuid), self::MODE_GET);
 
         if ($response->code != 200) {
-            throw new Exception("Authentication status request failure HTTP:$response->code");
+            throw new NotakeyApiException("Authentication status request failure HTTP:$response->code");
         }
 
         return $response->body;
