@@ -86,7 +86,8 @@ class Ntk_Two_Factor_Core
 
         if (self::get_config('reject_login_without_mfa', false)) {
             if (count($enabled_providers) == 0) {
-                throw new Exception("Login without 2FA not allowed.");
+                wp_die(esc_html__("Login without 2FA is not allowed. Contact your site administrator.", self::td()), 403);
+                throw new Exception("Login without 2FA is not allowed.");
             }
         }
 

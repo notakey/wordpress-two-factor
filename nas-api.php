@@ -180,7 +180,7 @@ class NasApi
 
     public function user_exists($username)
     {
-        return $this->get_user($username);
+        return $this->get_user($username) !== false;
     }
 
     public function get_user($username)
@@ -211,7 +211,7 @@ class NasApi
 
     public function delete_user($username)
     {
-        $u = $this->user_exists($username);
+        $u = $this->get_user($username);
         if ($u) {
             return $this->delete_user_by_keyname($u->keyname);
         }
@@ -232,7 +232,7 @@ class NasApi
 
     public function sync_user($username, $userdata)
     {
-        $u = $this->user_exists($username);
+        $u = $this->get_user($username);
         if ($u) {
             return $this->update_user_by_keyname($u->keyname, $userdata);
         } else {

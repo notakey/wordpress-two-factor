@@ -33,8 +33,49 @@ class Two_Factor_Notakey extends Two_Factor_Provider
         add_action('two_factor_user_options_' . __CLASS__, array($this, 'user_options'));
         add_action('personal_options_update', array($this, 'user_options_update'));
         add_action('edit_user_profile_update', array($this, 'user_options_update'));
+        add_action('admin_notices', array($this, 'admin_notices'));
         return parent::__construct();
     }
+
+    /**
+     * Displays an admin notice when backup user not onboarded.
+     *
+     * @since 0.1-dev
+     */
+    public function admin_notices()
+    {
+        $user = wp_get_current_user();
+
+        // Return if the provider is not enabled.
+        if (!in_array(__CLASS__, Two_Factor_Core::get_enabled_providers_for_user($user->ID), true)) {
+            return;
+        }
+
+        // Return if if user is already provisioned
+        if ($this->is_available_for_user($user)) {
+            return;
+        }
+
+?>
+        <div class="error">
+            <p>
+                <span>
+                    <?php
+                    echo wp_kses(
+                        sprintf(
+                            /* translators: %s: URL for code regeneration */
+                            __('Two-Factor: Notakey Authenticator mobile device has not been registered. Register device <a href="%s">here</a>!', Ntk_Two_Factor_Core::td()),
+                            esc_url(get_edit_user_link($user->ID) . '')
+                        ),
+                        array('a' => array('href' => true))
+                    );
+                    ?>
+                    <span>
+            </p>
+        </div>
+    <?php
+    }
+
 
     /**
      * Ensures only one instance of this class exists in memory at any one time.
@@ -179,7 +220,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
         wp_enqueue_script('ntk-script', plugins_url('ntk.js', __FILE__), ['wp-util', 'jquery']);
 
         require_once ABSPATH . '/wp-admin/includes/template.php';
-?>
+    ?>
         <p><strong><?php esc_html_e('Notakey Authentication', Ntk_Two_Factor_Core::td()); ?></strong></p>
         <input type="hidden" name="wp-auth-ntk-uuid" id="wp-auth-ntk-uuid" value="<?php echo esc_attr($uuid); ?>">
         <div id="ntk_auth_wait">
@@ -296,6 +337,13 @@ class Two_Factor_Notakey extends Two_Factor_Provider
      */
     public function is_available_for_user($user)
     {
+        $ob_status = $this->get_umeta($user->ID, self::KEY_ONBOARDING_STATUS, self::ONBOARDING_STATUS_NONE);
+
+        if ($ob_status != self::ONBOARDING_STATUS_NONE) {
+            return true;
+        }
+
+        // In case we don't have local state for this user
         return $this->ntkas()->user_exists($this->get_ntk_username($user));
     }
 
@@ -487,7 +535,8 @@ class Two_Factor_Notakey extends Two_Factor_Provider
 
         if ($this->ntkas()->user_exists($this->get_ntk_username($user))) {
             if ($this->ntkas()->can_be_onboarded($this->get_ntk_username($user))) {
-                $ob_status = get_user_meta($user->ID, self::KEY_ONBOARDING_STATUS, true);
+                // User has free device seats available
+                $ob_status = $this->get_umeta($user->ID, self::KEY_ONBOARDING_STATUS, self::ONBOARDING_STATUS_STARTED);
             } else {
                 $ob_status = self::ONBOARDING_STATUS_DONE;
             }
@@ -514,7 +563,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
     {
         $v = get_user_meta($user_id, $key, true);
 
-        if ($v == false) {
+        if ($v === false) {
             $v = $default;
         }
 
