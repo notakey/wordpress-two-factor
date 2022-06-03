@@ -99,6 +99,15 @@ class Ntk_Two_Factor_Core
         load_plugin_textdomain(self::td());
     }
 
+    public static function log($message, $ex = null)
+    {
+        if (true === WP_DEBUG && $ex) {
+            error_log($message . " (" . get_class($ex) . ")\n" . $ex->getTraceAsString());
+        } else {
+            error_log($message);
+        }
+    }
+
     private static function get_ntk_instance()
     {
         require_once(plugin_dir_path(__FILE__) . 'class-two-factor-notakey.php');

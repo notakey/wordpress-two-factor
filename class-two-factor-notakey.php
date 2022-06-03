@@ -306,6 +306,7 @@ class Two_Factor_Notakey extends Two_Factor_Provider
             }
         } catch (Exception $ex) {
             // 404 or other bad status
+            Ntk_Two_Factor_Core::log("Auth status error: " . $ex->getMessage(), $ex);
             return 0;
         }
 
@@ -337,14 +338,25 @@ class Two_Factor_Notakey extends Two_Factor_Provider
      */
     public function is_available_for_user($user)
     {
+        if (!Ntk_Two_Factor_Core::ready()) {
+            return false;
+        }
+
         $ob_status = $this->get_umeta($user->ID, self::KEY_ONBOARDING_STATUS, self::ONBOARDING_STATUS_NONE);
 
         if ($ob_status != self::ONBOARDING_STATUS_NONE) {
             return true;
         }
 
+        $exists = false;
+        try {
+            $exists = $this->ntkas()->user_exists($this->get_ntk_username($user));
+        } catch (Exception $ex) {
+            Ntk_Two_Factor_Core::log("User query error: " . $ex->getMessage(), $ex);
+        }
+
         // In case we don't have local state for this user
-        return $this->ntkas()->user_exists($this->get_ntk_username($user));
+        return $exists;
     }
 
     /**
@@ -384,22 +396,33 @@ class Two_Factor_Notakey extends Two_Factor_Provider
     public function user_options($user)
     {
         if (!isset($user->ID)) {
-            return false;
+            return;
+        }
+
+        $active_error = '';
+        try {
+            $s = $this->ntkas()->service();
+        } catch (Exception $e) {
+            $active_error = 'Exception when connecting to service: ' . $e->getMessage();
         }
 
         if (!Ntk_Two_Factor_Core::ready()) {
+            $active_error  = 'Required parameters missing in Notakey MFA';
+        }
+
+        if ($active_error) {
         ?>
             <div style="border: 1px solid; background-color: #FFBABA; color: #D8000C; margin: 10px auto; padding: 15px 10px 15px 50px;">
                 <p>
-                    <?php
-                    echo esc_html(
-                        _x('Notakey Two-Factor provider is not configured, device registration not possible.', Ntk_Two_Factor_Core::td()),
-                    );
-                    ?>
+                    <?php esc_html_e('Notakey Two-Factor provider is not configured, device registration not possible.', Ntk_Two_Factor_Core::td()); ?>
+                    <br />
+                    <code>
+                        <?php esc_html_e($active_error, Ntk_Two_Factor_Core::td()); ?>
+                    </code>
                 </p>
             </div>
         <?php
-            return false;
+            return;
         }
 
         wp_nonce_field('user_two_factor_notakey_options', '_nonce_user_two_factor_notakey_options', false);

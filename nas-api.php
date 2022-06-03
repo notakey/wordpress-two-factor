@@ -144,7 +144,6 @@ class NasApi
             if ($response->code == 403) {
                 $this->_ts->clear_token($scopes);
                 unset($this->_token[$scopes]);
-                // return $this->req($path, $mode, $request, $scopes, 1);
                 $response = $this->req($path, $mode, $request, $scopes, 1);
 
                 if ($response->code == 403) {
