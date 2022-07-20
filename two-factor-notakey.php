@@ -84,13 +84,16 @@ class Ntk_Two_Factor_Core
             }
         }
 
-        if (self::get_config('reject_login_without_mfa', false)) {
-            if (count($enabled_providers) == 0) {
-                wp_die(esc_html__("Login without 2FA is not allowed. Contact your site administrator.", self::td()), 403);
-                throw new Exception("Login without 2FA is not allowed.");
+        $current_id = get_current_user_id();
+
+        if ($current_id == $user_id || $current_id == 0) {
+            if (self::get_config('reject_login_without_mfa', false)) {
+                if (count($enabled_providers) == 0) {
+                    wp_die(esc_html__("Login without 2FA is not allowed. Contact your site administrator.", self::td()), 403);
+                    throw new Exception("Login without 2FA is not allowed.");
+                }
             }
         }
-
         return $enabled_providers;
     }
 
